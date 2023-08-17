@@ -1,0 +1,313 @@
+import sys
+from PyQt5 import QtGui
+from PyQt5.QtWidgets import QApplication, QMainWindow, \
+    QGridLayout, QWidget, QPushButton, QLabel, QListWidget, QLineEdit
+from PyQt5.QtCore import pyqtSlot
+# from OOP.PG.PGClass import PGClass
+# from OOP.ScpiDevice import ScpiDevice
+
+
+class PgGui(QMainWindow):
+    """ First window that is main application for the pulse generator
+    graphical user interface. It has the options to turn on and off various 
+    buttons.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Pulse Generator")
+        self.setFixedSize(1000, 800)
+        self.setStyleSheet("QPushButton { background-color: #808080}")
+
+        self.text = None
+        # self.pg_class = PGClass(ScpiDevice)
+        # self.pg_class.show_okay_gui(title="Pulse Generator",
+        #                             message="Ensure the pulse generator is "
+        #                             " plugged in correctly and switched ON.")
+
+        # Creates a widget
+        self.central_widget = QWidget(self)
+        # Sets the widget to the center
+        self.setCentralWidget(self.central_widget)
+        # Creates a grid layout for the pg layout
+        self.pg_layout = QGridLayout()
+        # Sets the grid layout to the center of the widget
+        self.central_widget.setLayout(self.pg_layout)
+        # Opens the first window
+        self._initialize_pg_main_window()
+
+    def _initialize_pg_main_window(self):
+        # Sets up the main menu information
+        self._pg_gui_menu()
+        # Sets up the buttons and other various actions
+        self._pg_gui_buttons()
+
+    def create_text_box(self, text, row, column):
+        """ Creates a text box that is just used for informational purposes
+        """
+        label = QLabel(text)
+        label.setFixedHeight(75)
+        label.setFont(QtGui.QFont("Helvetica Neue", 12))
+        self.pg_layout.addWidget(label, row, column)
+
+    @pyqtSlot()
+    def send_button(self):
+        """ Grabs the user's action, decides which button action
+        was activated and executes that action.
+        """
+        sender = self.sender()
+        button_text = sender.text()
+
+        button_actions = {
+            # "Channel": self.pg_class.send_pulse_output,
+            "Waveform": waveform_options_window.show(),
+            # "Modulation": self.pg_class.send_modulation_output,
+            # "Sweep": self.pg_class.send_sweep_output,
+            # "Burst": self.pg_class.send_burst_output,
+            # "Trigger": self.pg_class.log_info("Trigger Button hasn't been created.")
+        }
+
+        action = button_actions.get(button_text)
+
+        if action is not None:
+            if button_text == "Waveform":
+                self.hide()
+            action()
+
+    def create_button(self, text: str, row, column):
+        """ Creates a button and adds it to the main widget
+        """
+        button = QPushButton(text)
+        button.setFixedHeight(75)
+        button.setFixedWidth(380)
+        button.setFont(QtGui.QFont("Helvetica Neue", 20))
+        button.clicked.connect(self.send_button)
+        self.pg_layout.addWidget(button, row, column)
+
+    def _pg_gui_menu(self):
+        main_menu = [
+            ("Waveform: Choose waveform \n type that you want.\n"
+             "Channel: Press to turn on,\n press again to turn off\n", 1, 0),
+            ("Modulation: Press to turn on,\n press again to turn off\n"
+             "Sweep: Press to turn on,\n press again to turn off\n", 2, 0),
+            ("Burst: Press to turn on,\n press again to turn off\n"
+             "DNE-Trigger: Press to turn on,\n press again to turn off\n", 3, 0)
+        ]
+        for text, row, column in main_menu:
+            self.create_text_box(text, row, column)
+
+    def _pg_gui_buttons(self):
+        buttons_info = [
+            ("Waveform", 1, 1),
+            ("Channel", 1, 2),
+            ("Modulation", 2, 1),
+            ("Sweep", 2, 2),
+            ("Burst", 3, 1),
+            ("Trigger", 3, 2)
+        ]
+        for text, row, column in buttons_info:
+            self.create_button(text, row, column)
+
+
+class WaveformWindow(PgGui):
+    """ Second window of the pulse generator graphical user interface.
+    Opens up the waveform window that gives the user the option to choose
+    the specific type of waveform they want to utilize.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Choose A Waveform Type")
+        self.setFixedSize(600, 400)
+
+        self.list = None
+        self.waveform_type = None
+
+        # Creates a widget
+        self.central_widget = QWidget(self)
+        # Sets the widget to the center
+        self.setCentralWidget(self.central_widget)
+        # Creates a grid layout for the pg layout
+        self.pg_layout = QGridLayout()
+        # Sets the grid layout to the center of the widget
+        self.central_widget.setLayout(self.pg_layout)
+        # Sets up the second window
+        self._initialize_waveform_window()
+
+    def _initialize_waveform_window(self):
+        # Creates a waveform list the user will choose from
+        self._create_waveform_list()
+
+    def _create_waveform_list(self):
+        """ Create a a list of waveform options the user can choose from
+        """
+        self.waveform_list = [
+            'SIN', 'SQU', 'RAMP',
+            'TRI', 'NRAM', 'NOIS',
+            'PRBS', 'DC', 'PULS'
+        ]
+
+        self.list = QListWidget()
+        self.list.setSelectionMode(QListWidget.SingleSelection)
+        for waveform_type in self.waveform_list:
+            self.list.addItem(waveform_type)
+        # for waveform_type in self.pg_class.waveform_list:
+        #     self.list.addItem(waveform_type)
+        self.list.clicked.connect(self._clicked)
+        self.pg_layout.addWidget(self.list)
+
+    def _clicked(self):
+        self.waveform_type = self.list.currentItem()
+        # self.pg_class.set_waveform_type(item)
+        self.hide()
+        waveform_setting_window.show()
+
+
+class SettingsWindow(PgGui):
+    """ Third window of the pulse generator graphical user interface.
+    The setting menu lets the user set values up and sends all of it
+    to the device once send_all_settings button is pressed. It also brings
+    you back to the main menu of the PG GUI.
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Waveform Setting")
+        self.setFixedSize(1000, 800)
+
+        self.value_input = None
+
+        # Creates a widget
+        self.central_widget = QWidget(self)
+        # Sets the widget to the center
+        self.setCentralWidget(self.central_widget)
+        # Creates a grid layout for the pg layout
+        self.pg_layout = QGridLayout()
+        # Sets the grid layout to the center of the widget
+        self.central_widget.setLayout(self.pg_layout)
+        # Sets up the third window
+        self._initialize_setting_window()
+
+    def _initialize_setting_window(self):
+        # Creates the setting window that the user can set values to
+        self._set_setting_window()
+
+    def _set_setting_window(self):
+        # Test
+        self.New_Settings = {
+            "GeneralSettings": {
+                "Waveform_Type": '',
+                "Continuous_Waveform": False,
+                "Trigger_Source": '',
+                "Trigger_Delay": 0.0,
+                "Trigger_Output": False,
+                "Trigger_Polarity": '',
+                "Burst_Cycles": 0.0
+            },
+            "WaveformSettings": {
+                "Frequency": 0.0,
+                "Voltage_Low": -0.05,
+                "Voltage_High": 0.05,
+                "Duty_Cycle": 0.0
+            }
+        }
+        self.Setting_Commands = {
+            "Waveform_Type": "FUNC",
+            "Voltage_Low": "VOLT:LOW",
+            "Voltage_High": "VOLT:HIGH",
+            "Frequency": "FREQ",
+            # "Leading_Edge_Time" : "FUNC:PULS:TRAN:LEAD",
+            # "Trailing_Edge_Time" : "FUNC:PULS:TRAN:TRA",
+            "Edge_Time": "FUNC:PRBS:TRAN",
+            "Duty_Cycle": "FUNC:SQU:DCYC",
+            "Ramp_Symmetry": "FUNC:RAMP:SYMM",
+            "Continuous_Waveform": "INIT:CONT",
+            "Trigger_Source": "TRIG:SOUR",
+            "Trigger_Delay": "TRIG:DEL",
+            "Trigger_Output": "OUTP:TRIG",
+            "Trigger_Polarity": "TRIG:SLOP",
+            "Burst_Cycles": "BURS:NCYC",
+            "Phase_Parameter": "SOUR:PHAS",
+            "Pulse_Width": "FUNC:PULS:WIDT",
+            "Bandwidth_Parameter": "FUNC:NOIS:BWID"
+        }
+        row = 0
+        column = 0
+        for setting, setting_commands in self.New_Settings.items():
+            for command in setting_commands:
+                self.create_text_box(
+                    f"{command}: {str(self.New_Settings[setting][command])}", row, column)
+                column += 1
+                self.create_input_box("", row, column)
+                column += 1
+                self.create_button("Save_" + command, row, column)
+                row += 1
+                column = 0
+
+        self.create_button("Send_All_Settings", row, column + 1)
+
+        # for setting, setting_commands in self.pg_class.New_Settings:
+        #     for command in setting_commands:
+        #         self.create_text_box(command, row, column)
+        #         column += 1
+        #         self.create_input_box("", row, column)
+        #         column += 1
+        #         self.create_button("Save",row, column)
+        #         row += 1
+        #         column = 0
+        # self.create_button("Send All Settings", row, column + 1)
+
+    def create_input_box(self, value, row, column):
+        """ Creates an input box that will let the user input a value
+        that will send to the setting command
+        """
+        self.value_input = QLineEdit()
+        self.value_input.setFixedHeight(75)
+        self.value_input.setReadOnly(False)
+        input_font = QtGui.QFont("Verdana", 15)
+        self.value_input.setFont(input_font)
+        self.pg_layout.addWidget(self.value_input, row, column)
+
+    @pyqtSlot()
+    def send_button(self):
+        sender = self.sender()
+        button_text = sender.text()
+
+        button_actions = {
+            # "Save_Voltage_High": self.pg_class.set_voltage_high,
+            # "Save_Voltage_Low": self.pg_class.set_voltage_low,
+            # "Save_Waveform_Type": self.pg_class.set_waveform_type,
+            # "Save_Frequency": self.pg_class.set_save_frequency,
+            # "Save_Leading_Edge_Time": self.pg_class.set_leading_edge_time,
+            # "Save_Trailing_Edge_Time": self.pg_class.set_trailing_edge_time,
+            # "Save_Edge_Time": self.pg_class.set_edge_time,
+            # "Save_Duty_Cycle": self.pg_class.set_duty_cycle,
+            # "Save_Ramp_Symmetry": self.pg_class.set_ramp_symmetry,
+            # "Save_Phase_Parameter": self.pg_class.set_phase_parameter,
+            # "Save_Pulse_Width": self.pg_class.set_pulse_width,
+            # "Save_Bandwidth_Parameter": self.pg_class.set_bandwidth_parameter,
+            # "Save_Continuous_Waveform": self.pg_class.set_continuous_waveform,
+            # "Save_Trigger_Source": self.pg_class.set_trigger_source,
+            # "Save_Trigger_Delay": self.pg_class.set_trigger_delay,
+            # "Save_Trigger_Output": self.pg_class.set_trigger_output,
+            # "Save_Trigger_Polarity": self.pg_class.set_trigger_polarity,
+            # "Save_Burst_Cycles": self.pg_class.set_burst_cycle,
+            "Send_All_Settings": pg_main_window.show()
+            # "Send_All_Settings": self.pg_class.send_all_settings
+        }
+
+        action = button_actions.get(button_text)
+
+        if action is not None:
+            if button_text == 'Send_All_Settings':
+                self.hide()
+            action()
+
+
+application = QApplication(sys.argv)
+pg_main_window = PgGui()
+waveform_options_window = WaveformWindow()
+waveform_setting_window = SettingsWindow()
+
+pg_main_window.show()
+sys.exit(application.exec())
