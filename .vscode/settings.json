@@ -1,0 +1,27 @@
+{
+  "python.defaultInterpreterPath": "env/Scripts/python",
+  "python.linting.pycodestyleEnabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.languageServer": "Pylance",
+  "editor.defaultFormatter": "ms-python.python",
+  "html.format.contentUnformatted": "",
+  "python.formatting.provider": "none",
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.autopep8"
+  },
+  "python.testing.unittestEnabled": true,
+  "testing.alwaysRevealTestOnStateChange": true,
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./OOP",
+    "-p",
+    "*test*.py"
+  ],
+  "python.testing.pytestEnabled": false,
+}
