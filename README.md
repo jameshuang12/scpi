@@ -1,6 +1,6 @@
 # Overview (Reference Repo)
 
-For the leading project, we are trying to create satellite that will function properly in space. For my project, I have been assigned to the SCPI project (also know as the Standard Commands for Programmable instrument). The SCPI devices will let us control multiple instruments remotely to run automated testing.
+For my project, I have been assigned to the SCPI project (also know as the Standard Commands for Programmable instrument). The SCPI devices will let us control multiple instruments remotely to run automated testing.
 
 Before I get into the architecture, I will go over the practice we use to create this project, object-oriented programing.  Like it says here, it goes into binding together data and functions that operate on them so that no other part of the code can access this data expect that function. In out case, this would be classes that get inherited by other classes. This would go into abstract and concrete classes, polymorphism, and dictionaries. 
 
@@ -8,7 +8,7 @@ Essentially, the Connect will the be main module that controls all the devices. 
 
 ![image](https://github.com/jameshuang12/scpi-jacobs/assets/114640234/5cde6cd9-8c89-465c-b956-56880c734586)
 
-In terms of my accomplishment in my internship, I have help implemented 5 devices. I made over 200 commits, wrote over 3,600 lines of code, and made 8 pull request. In addition to implementing these devices into my project, I have applied an agile software development into the code itself. 
+In terms of my accomplishment in my internship, I have help implemented 7 devices. I made over 200 commits, wrote over 3,600 lines of code, and made 8 pull request. In addition to implementing these devices into my project, I have applied an agile software development into the code itself. 
   
 Challenges I have faced are learning curve of the project, time management in a full-time job, and sharpening my communication skills with my mentors to ensure I get my point across.
 
