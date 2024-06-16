@@ -1,103 +1,19 @@
-# Rohde & Schwarz SCPI Driver
-[![Test Status    ](https://travis-ci.org/mclim9/rssd.svg?branch=master)](https://travis-ci.org/github/mclim9/rssd)
-[![PyPI version   ](https://badge.fury.io/py/rssd.svg)](https://pypi.org/project/rssd/)
-![Coveralls github](https://img.shields.io/coveralls/github/mclim9/rssd)
-![Versioning      ](https://img.shields.io/badge/calver-YY.0M.MICRO-22bfda.svg)
-![Python package  ](https://github.com/mclim9/rssd/workflows/Python%20package/badge.svg)
+# Overview (Reference Repo)
 
-## Description
-- Example python drivers
-  - [VSA](https://github.com/mclim9/rssd/tree/master/rssd/VSA), Vector Spectrum Analyzer
-  - [VSG](https://github.com/mclim9/rssd/tree/master/rssd/VSG), Vector Signal Generator
-  - [NRP](https://github.com/mclim9/rssd/tree/master/rssd/NRP), Power Sensor
-  - [VSE](https://github.com/mclim9/rssd/tree/master/rssd/VSE), Vector Signal Explorer
-  - [OSP](https://github.com/mclim9/rssd/tree/master/rssd/OSP), Switch Platform
-  - [NRQ](https://github.com/mclim9/rssd/tree/master/rssd/NRQ), Frequency Selective Power Sensor
-  - [VNA](https://github.com/mclim9/rssd/tree/master/rssd/VNA), Vector Network Analyzer
+For the leading project, we are trying to create satellite that will function properly in space. For my project, I have been assigned to the SCPI project (also know as the Standard Commands for Programmable instrument). The SCPI devices will let us control multiple instruments remotely to run automated testing.
 
-- [Example code](https://github.com/mclim9/rssd/tree/master/rssd/examples)
-  - Automated test examples, see below table
-  - Instrument speed/repeatability evaluation
-  - Proof of concept/Demo code
+Before I get into the architecture, I will go over the practice we use to create this project, object-oriented programing.  Like it says here, it goes into binding together data and functions that operate on them so that no other part of the code can access this data expect that function. In out case, this would be classes that get inherited by other classes. This would go into abstract and concrete classes, polymorphism, and dictionaries. 
 
-- RSSD is open source.
-  - Package APIs *may*- change.
-  - We recommend users "freeze/save" package version prior to use.
-  - **SW is provided as is**
-  - Not an official Rohde & Schwarz supported product
+Essentially, the Connect will the be main module that controls all the devices. The SCPI device has the general functions of all the devices while base device has general functions a few devices uses but not all.  The device class is specific for the device settings and sets up all the settings. The manual class is commands that execute specific commands only able to be called for that device. The make/model class is the information of the exact model in the lab that will be utilized in the lab. 
 
-## Getting Started
+![image](https://github.com/jameshuang12/scpi-jacobs/assets/114640234/5cde6cd9-8c89-465c-b956-56880c734586)
 
-### Installation
+In terms of my accomplishment in my internship, I have help implemented 5 devices. I made over 200 commits, wrote over 3,600 lines of code, and made 8 pull request. In addition to implementing these devices into my project, I have applied an agile software development into the code itself. 
+  
+Challenges I have faced are learning curve of the project, time management in a full-time job, and sharpening my communication skills with my mentors to ensure I get my point across.
 
-```python
-python -m pip install rssd
-```
+For what I have learned, I had the most trouble with this slide since I learned so much, so I tried to keep this straight forward as possible. For the professional background, I got a sense of professionalism in the workspace and a feeling of a workspace culture. I have had to adjust my time management skills to accommodate to a working lifestyle.   For my technical background, I have improved my python coding technical skills, ranging from software architecture to object-oriented programming. In addition, the I was able to learn troubleshooting skills and networking connecting skills. Lastly, the project itself, I have learned about what SCPI is.
 
-### Running
+For Jacob’s team culture, I have really appreciated the events, volunteering opportunity, and activities that were provided to us. Also, I want to say I really appreciate my mentors and the people around our building for being patient with me and giving us guidance. 
 
-#### Method 1
-- Goto Example directory
-  - Open command prompt and type `rssd`
-  - Example directory will be printed.
-- Run Example
-  - Open desired example
-  - Change IP address to match instrument(s)
-  - Run file
-
-#### Method 2
-- Goto Example directory
-  - Open command prompt and type: `python -m pip show rssd`
-  - Load example files listed after `Location:`
-- Run Example
-  - Open desired example
-  - Change IP address to match instrument(s)
-  - Run
-
-### Example Code
-| FileName                                                                             | Instrumnt | Description                        |
-| ------------------------------------------------------------------------------------ | --------- | ---------------------------------- |
-| [AAA_CommandTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)         | Any       | Time command to instrument         |
-| [AAA_IDN_IPArry](https://github.com/mclim9/rssd/blob/master/rssd/examples/)          | Any       | Send *IDN to instruments in IPArry |
-| [FSW_ACLR_Timing](https://github.com/mclim9/rssd/blob/master/rssd/examples/)         | VSA       | ACLR in Spectral Mode              |
-| [FSW_ACLR_IQ_Timing](https://github.com/mclim9/rssd/blob/master/rssd/examples/)      | VSA       | ACLR in IQ Analyzer                |
-| [FSW_CCDF](https://github.com/mclim9/rssd/blob/master/rssd/examples/)                | VSA       | CCDF in Spectral Mode              |
-| [FSW_IQCaptureTime](https://github.com/mclim9/rssd/blob/master/rssd/examples/)       | VSA       | IQ Capture time looping Fs         |
-| [NRP_AvgPwr](https://github.com/mclim9/rssd/blob/master/rssd/examples/)              | NRP       | NRP Average power capture          |
-| [NRP_BufferedContAvg](https://github.com/mclim9/rssd/blob/master/rssd/examples/)     | NRP       | Bufferened NRP measurement         |
-| [SMW_LoadArb.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)          | VSG       | Load Arb file into SMW             |
-| [OSP_Debug](https://github.com/mclim9/rssd/blob/master/rssd/examples/)               | OSP       | Generic OSP example                |
-| [VSE_ADemod.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)           | VSE       | VSE/FSW Analog FM Demod            |
-| [VSE_Debug.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSE       | VSE Raw SCPI                       |
-| [VSE_OFDM_1CC_K96.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)     | VSE       | VSE Single OFDM Carrier EVM w/ K96 |
-| [VSE_OFDM_MultiCC_K96.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/) | VSE       | VSE Multi  OFDM Carrier EVM w/ K96 |
-| [VST_5GNR_EVM](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW K144 speed tests           |
-| [VST_5GNR_K144_Read](https://github.com/mclim9/rssd/blob/master/rssd/examples/)      | VSG VSA   | SMW/FSW Read 5G NR Parametes       |
-| [VST_Sweep.py](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW Frequency Sweep            |
-| [VST_WLAN_EVM](https://github.com/mclim9/rssd/blob/master/rssd/examples/)            | VSG VSA   | SMW/FSW 802.11 EVM sweep test      |
-
-# [Documentation](https://github.com/mclim9/rssd/wiki/)
-
-## Instrument Documentation
-| Driver | Description              | User Manual                                                                                                  | Models                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ------ | ------------------------ | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| VSA    | Vector Signal Analyzer   | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=FSW+user+manual&sort=relevance)        | [FSW](https://www.rohde-schwarz.com/us/product/fsw); [FSWP](https://www.rohde-schwarz.com/us/product/fswp); [FSVA3K](https://www.rohde-schwarz.com/us/product/fsva3000); [FSVA](https://www.rohde-schwarz.com/us/product/fsva); [FPL](https://www.rohde-schwarz.com/us/product/fpl1000);                                                                                                                            |
-| VSG    | Vector Signal Generator  | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=smw+vector+user+manual&sort=relevance) | [SMW](https://www.rohde-schwarz.com/us/product/smw200a); [SMBV](https://www.rohde-schwarz.com/us/product/smbv100b); [SGT](https://www.rohde-schwarz.com/us/product/sgt100A); [SGS](https://www.rohde-schwarz.com/us/product/sgs100A); [SMA-B](https://www.rohde-schwarz.com/us/product/sma100b); [SMB-B](https://www.rohde-schwarz.com/us/product/smb100b); [SMF](https://www.rohde-schwarz.com/us/product/smf100a) |
-| VNA    | Vector Network Analyzer  | [User Manual](https://www.rohde-schwarz.com/us/manual/zva/)                                                  | [ZVA](https://www.rohde-schwarz.com/us/product/zva); [ZNA](https://www.rohde-schwarz.com/us/product/zna); [ZNB](https://www.rohde-schwarz.com/us/product/ZNB)                                                                                                                                                                                                                                                       |
-| VSE    | Vector Analysis Software | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=vse+base+user+manual)                  | [VSE](https://www.rohde-schwarz.com/us/product/vse)                                                                                                                                                                                                                                                                                                                                                                 |
-| PNA    | Phase Noise Analyzer     | [User Manual](https://www.rohde-schwarz.com/us/manual/fswp/)                                                 | [FSWP](https://www.rohde-schwarz.com/us/product/fswp)                                                                                                                                                                                                                                                                                                                                                               |
-| NRP    | Power Sensor             | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=nrp_s_sn+user+manual)                  | [NRP](https://www.rohde-schwarz.com/us/product/nrp_s_sn); [NRPM](https://www.rohde-schwarz.com/us/product/nrpm)                                                                                                                                                                                                                                                                                                     |
-| RCT    | Radio Comm Tester        | [User Manual](https://www.rohde-schwarz.com/us/search_63238.html?term=cmw+user+manual)                       | [CMW500](https://www.rohde-schwarz.com/us/product/CMW500); [CMW100](https://www.rohde-schwarz.com/us/product/CMW100); [CMP200](https://www.rohde-schwarz.com/us/product/CMP200)                                                                                                                                                                                                                                     |
-| NRQ    | Freq Selective Sensor    | [User Manual](https://www.rohde-schwarz.com/us/manual/nrq6/)                                                 | [NRQ](https://www.rohde-schwarz.com/us/product/nrq6)                                                                                                                                                                                                                                                                                                                                                                |
-| OSP    | Switch Matrix            | [User Manual](https://www.rohde-schwarz.com/us/manual/osp/)                                                  | [OPS1xx](https://www.rohde-schwarz.com/us/product/osp); [OPS2xx](https://www.rohde-schwarz.com/us/product/osp-n)                                                                                                                                                                                                                                                                                                    |
-| DSO    | Digital Oscillocope      | [User Manual](https://www.rohde-schwarz.com/us/manual/rtp/)                                                  | [RTP](https://www.rohde-schwarz.com/us/product/RTP); [RTO](https://www.rohde-schwarz.com/us/product/RTO); [RTE](https://www.rohde-schwarz.com/us/product/RTE);                                                                                                                                                                                                                                                      |
-| OTA    | Radiated Chambers        | [User Manual](https://www.rohde-schwarz.com/us/manual/ATS1000/)                                              | [ATS800](https://www.rohde-schwarz.com/us/product/ATS800); [ATS1000](https://www.rohde-schwarz.com/us/product/ATS1000); [ATS1800](https://www.rohde-schwarz.com/us/product/ATS1800C); [CMQ](https://www.rohde-schwarz.com/us/product/CMQ500); [DST200](https://www.rohde-schwarz.com/us/product/DST200); [TS7124](https://www.rohde-schwarz.com/us/product/ts7124)                                                  |
-
-# Project
-- Code Repository: [GitHub](https://github.com/mclim9/rssd)
-- Author: Martin C Lim
-- License: This project is licensed under the R&S License for Royalty-Free Products- see the [LICENSE](LICENSE.txt) file for details
-
-## Acknowledgments
-- Thanx to [Nick Lalic](https://pypi.org/project/rohdeschwarz/) for all his help.
-- [Markdown reference](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+![image](https://github.com/jameshuang12/scpi-jacobs/assets/114640234/fd29715e-36bd-4a5d-bb9f-fab483fbc0c8)
