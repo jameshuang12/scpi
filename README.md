@@ -8,7 +8,7 @@ Essentially, the Connect will the be main module that controls all the devices. 
 
 ![image](https://github.com/jameshuang12/scpi-jacobs/assets/114640234/5cde6cd9-8c89-465c-b956-56880c734586)
 
-In terms of my accomplishment in my internship, I have help implemented 5 devices. I made over 200 commits, wrote over 3,600 lines of code, and made 8 pull request. In addition to implementing these devices into my project, I have applied an agile software development into the code itself. 
+In terms of my accomplishment in my internship, I have help implemented 10 devices. I made over 200 commits, wrote over 3,600 lines of code, and made 8 pull request. In addition to implementing these devices into my project, I have applied an agile software development into the code itself. 
   
 Challenges I have faced are learning curve of the project, time management in a full-time job, and sharpening my communication skills with my mentors to ensure I get my point across.
 
