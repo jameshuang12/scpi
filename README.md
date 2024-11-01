@@ -1,6 +1,6 @@
 # Overview
 
-For the leading project, we are trying to create satellite that will function properly in space. For my project, I have been assigned to the SCPI project (also know as the Standard Commands for Programmable instrument). The SCPI devices will let us control multiple instruments remotely to run automated testing.
+For the leading project, we are trying to create satellite that will function properly in space. For my role in the project, I worked on the SCPI(Standard Commands for Programmable instrument) project where I developed python scripts to control multiple instruments remotely to run automated testing.
 
 Before I get into the architecture, I will go over the practice we use to create this project, object-oriented programing.  Like it says here, it goes into binding together data and functions that operate on them so that no other part of the code can access this data expect that function. In out case, this would be classes that get inherited by other classes. This would go into abstract and concrete classes, polymorphism, and dictionaries. 
 
